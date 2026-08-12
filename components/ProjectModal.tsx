@@ -280,9 +280,6 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
 
               {/* Highlights */}
               <div className="mb-8">
-                <h3 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-                  Key Features
-                </h3>
                 <ul className="space-y-3">
                   {project.highlights.map((highlight: string, index: number) => (
                     <li

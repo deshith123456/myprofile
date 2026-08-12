@@ -121,9 +121,8 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
     ? achievements
     : achievements.filter(a => a.category === activeCategory)
 
-  // Apply certification limit when not showing all
   const displayedAchievements = activeCategory === 'certification' && !showAllCertifications
-    ? filteredAchievements.slice(0, 5)
+    ? filteredAchievements.slice(0, 4)
     : filteredAchievements
 
   // Get count for each category
@@ -344,7 +343,7 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
             )
           })}
         </motion.div>
-{activeCategory === 'certification' && filteredAchievements.length > 5 && (
+{activeCategory === 'certification' && filteredAchievements.length > 4 && (
   <div className="text-center py-8">
     <button
       onClick={() => setShowAllCertifications(!showAllCertifications)}

@@ -114,7 +114,7 @@ export function Projects({ projects: projectsData }: { projects: Project[] }) {
 
         {/* Projects Grid - show limited with optional "See All" */}
         {(() => {
-          const limit = 6;
+          const limit = 3;
           const showAll = showAllProjects || filteredAndSortedProjects.length <= limit;
           const displayed = showAll ? filteredAndSortedProjects : filteredAndSortedProjects.slice(0, limit);
           return (
