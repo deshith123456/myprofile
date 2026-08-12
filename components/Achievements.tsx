@@ -100,7 +100,7 @@ function AchievementLogo({ achievement, Icon }: { achievement: Achievement, Icon
 
 export function Achievements({ achievements }: { achievements: Achievement[] }) {
   const [selectedCertificate, setSelectedCertificate] = useState<Achievement | null>(null)
-  const [showAllCertifications, setShowAllCertifications] = useState(false)
+  const [showAll, setShowAll] = useState(false)
   const [selectedReport, setSelectedReport] = useState<Achievement | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
@@ -121,9 +121,10 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
     ? achievements
     : achievements.filter(a => a.category === activeCategory)
 
-  const displayedAchievements = activeCategory === 'certification' && !showAllCertifications
-    ? filteredAchievements.slice(0, 4)
-    : filteredAchievements
+  const LIMIT = 4
+  const displayedAchievements = showAll
+    ? filteredAchievements
+    : filteredAchievements.slice(0, LIMIT)
 
   // Get count for each category
   const getCategoryCount = (category: AchievementCategory | 'all') => {
@@ -180,6 +181,7 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
           className="flex overflow-x-auto pb-2 md:pb-0 md:flex-wrap md:justify-center gap-2 mb-12 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0"
+          onChange={() => setShowAll(false)}
         >
           {filterTabs.map((tab) => {
             const count = getCategoryCount(tab.id)
@@ -189,7 +191,7 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveCategory(tab.id)}
+                onClick={() => { setActiveCategory(tab.id); setShowAll(false) }}
                 className={`
                   group flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300
                   ${isActive
@@ -343,13 +345,13 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
             )
           })}
         </motion.div>
-{activeCategory === 'certification' && filteredAchievements.length > 4 && (
+{filteredAchievements.length > 4 && (
   <div className="text-center py-8">
     <button
-      onClick={() => setShowAllCertifications(!showAllCertifications)}
+      onClick={() => setShowAll(!showAll)}
       className="px-6 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:border-primary-500 hover:text-primary-600 transition font-semibold"
     >
-      {showAllCertifications ? '← Show Less' : 'See All Certifications →'}
+      {showAll ? '← Show Less' : 'See All →'}
     </button>
   </div>
 )}

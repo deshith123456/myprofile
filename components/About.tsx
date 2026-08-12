@@ -110,7 +110,10 @@ function SkillCard({ skill }: { skill: Skill }) {
 }
 
 export function About({ skills, profile }: { skills: Skill[], profile: Profile }) {
-  const skillsData = skills // Keep consistency with previous naming if needed
+  const skillsData = skills
+  const [showAllSecurity, setShowAllSecurity] = useState(false)
+  const [showAllDev, setShowAllDev] = useState(false)
+  const LIMIT = 4
 
   return (
     <section id="about" className="py-24 bg-[#F8FAFC] dark:bg-[#030711] relative overflow-hidden">
@@ -161,10 +164,22 @@ export function About({ skills, profile }: { skills: Skill[], profile: Profile }
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              {skillsData.filter(s => s.category === 'security-tools').map(skill => (
-                <SkillCard key={skill.name} skill={skill} />
-              ))}
+              {skillsData.filter(s => s.category === 'security-tools')
+                .slice(0, showAllSecurity ? undefined : LIMIT)
+                .map(skill => (
+                  <SkillCard key={skill.name} skill={skill} />
+                ))}
             </div>
+            {skillsData.filter(s => s.category === 'security-tools').length > LIMIT && (
+              <div className="text-center pt-4">
+                <button
+                  onClick={() => setShowAllSecurity(!showAllSecurity)}
+                  className="px-6 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:border-primary-500 hover:text-primary-600 transition font-semibold text-sm"
+                >
+                  {showAllSecurity ? '← Show Less' : 'See All →'}
+                </button>
+              </div>
+            )}
           </motion.div>
 
           {/* Dev & Scripting Section */}
@@ -182,10 +197,22 @@ export function About({ skills, profile }: { skills: Skill[], profile: Profile }
             </div>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              {skillsData.filter(s => s.category === 'programming').map(skill => (
-                <SkillCard key={skill.name} skill={skill} />
-              ))}
+              {skillsData.filter(s => s.category === 'programming')
+                .slice(0, showAllDev ? undefined : LIMIT)
+                .map(skill => (
+                  <SkillCard key={skill.name} skill={skill} />
+                ))}
             </div>
+            {skillsData.filter(s => s.category === 'programming').length > LIMIT && (
+              <div className="text-center pt-4">
+                <button
+                  onClick={() => setShowAllDev(!showAllDev)}
+                  className="px-6 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:border-primary-500 hover:text-primary-600 transition font-semibold text-sm"
+                >
+                  {showAllDev ? '← Show Less' : 'See All →'}
+                </button>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
