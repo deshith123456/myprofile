@@ -345,12 +345,12 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
           })}
         </motion.div>
 {activeCategory === 'certification' && filteredAchievements.length > 5 && (
-  <div className="text-center py-4">
+  <div className="text-center py-8">
     <button
       onClick={() => setShowAllCertifications(!showAllCertifications)}
-      className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 transition"
+      className="px-6 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl hover:border-primary-500 hover:text-primary-600 transition font-semibold"
     >
-      {showAllCertifications ? 'Show Less' : 'See All'}
+      {showAllCertifications ? '← Show Less' : 'See All Certifications →'}
     </button>
   </div>
 )}
