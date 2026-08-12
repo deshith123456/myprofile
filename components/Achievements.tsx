@@ -100,6 +100,7 @@ function AchievementLogo({ achievement, Icon }: { achievement: Achievement, Icon
 
 export function Achievements({ achievements }: { achievements: Achievement[] }) {
   const [selectedCertificate, setSelectedCertificate] = useState<Achievement | null>(null)
+  const [showAllCertifications, setShowAllCertifications] = useState(false)
   const [selectedReport, setSelectedReport] = useState<Achievement | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
@@ -119,6 +120,11 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
   const filteredAchievements = activeCategory === 'all'
     ? achievements
     : achievements.filter(a => a.category === activeCategory)
+
+  // Apply certification limit when not showing all
+  const displayedAchievements = activeCategory === 'certification' && !showAllCertifications
+    ? filteredAchievements.slice(0, 5)
+    : filteredAchievements
 
   // Get count for each category
   const getCategoryCount = (category: AchievementCategory | 'all') => {
@@ -216,7 +222,7 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
           animate="visible"
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {filteredAchievements.map((achievement) => {
+          {displayedAchievements.map((achievement) => {
             const Icon = categoryIcons[achievement.category]
             const isPDF = achievement.certificateFile?.toLowerCase().endsWith('.pdf')
             const isImage = achievement.certificateFile && !isPDF
@@ -248,16 +254,15 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900/30 dark:to-secondary-900/30 flex items-center justify-center">
-                          <div className="text-center p-4">
-                            <Icon className="h-12 w-12 mx-auto mb-2 text-primary-600 dark:text-primary-400" />
-                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                              PDF Certificate
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                              Click to view
-                            </p>
-                          </div>
+                        <div className="relative w-full h-48 rounded-t-xl overflow-hidden mb-4 flex items-center justify-center cursor-pointer" onClick={() => handleCertificateClick(achievement)}>
+                          <Image
+                            src="/placeholder_pdf_1786536404120.jpg"
+                            alt="PDF Certificate"
+                            fill
+                            className="object-cover transition-transform duration-300 hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                          <p className="absolute bottom-2 left-0 right-0 text-center text-xs text-gray-500 dark:text-gray-400 bg-black/30 py-1">Click to view</p>
                         </div>
                       )}
                       {achievement.category === 'reports' && achievement.coverImage && (
@@ -339,6 +344,16 @@ export function Achievements({ achievements }: { achievements: Achievement[] }) 
             )
           })}
         </motion.div>
+{activeCategory === 'certification' && filteredAchievements.length > 5 && (
+  <div className="text-center py-4">
+    <button
+      onClick={() => setShowAllCertifications(!showAllCertifications)}
+      className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 transition"
+    >
+      {showAllCertifications ? 'Show Less' : 'See All'}
+    </button>
+  </div>
+)}
 
 
 
